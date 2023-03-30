@@ -27,7 +27,7 @@ app.get("/api/get/*", (req,res) => {
     res.send(msgs[pubkey]);
 });
 
-app.post("/api/post", (req,res) => {
+app.post("/api/post/*", (req,res) => {
     try
     {
         Object.defineProperty(msgs, req.body.usrKey, {value: req.body.msg});
