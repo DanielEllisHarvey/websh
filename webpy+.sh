@@ -1,6 +1,6 @@
 #!/bin/sh
 #? this is the specific version with a passwd gen script
-addr="127.0.0.1" post_port=8181 get_port=8181 post_ext="api/post" get_ext="api/get" pysalt=$(cat .salt) mark="py+" user=$(cat .usrname)
+addr="127.0.0.1" post_port=8181 get_port=8181 post_ext="api/post" get_ext="api/get" pysalt=$(cat .salt) user=$(cat .usrname)
 case $1 in
 "-p"|"--post")
 in_file=$(cat "$3")
@@ -12,7 +12,7 @@ fi
 pass_gen=$(python gen.py "$4" "$pysalt")
 openssl enc -aes-256-cbc -in "$3" -out .tmpenc -pbkdf2 -k "$pass_gen" -a
 file1=$(cat .tmpenc)
-curl -X POST -H "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"" --data-urlencode "msg=$file1" --data-urlencode "usrKey=$mark-$user-$2" "http://$addr:$post_port/$post_ext"
+curl -X POST -H "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"" --data-urlencode "msg=$file1" --data-urlencode "usrKey=$user/$2" "http://$addr:$post_port/$post_ext"
 rm .tmpenc
 exit 0
 ;;
